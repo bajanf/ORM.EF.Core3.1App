@@ -10,7 +10,7 @@ namespace ConsoleApp
         private static SamuraiContext context = new SamuraiContext();
         static void Main(string[] args)
         {
-            context.Database.EnsureCreated();
+            //context.Database.EnsureCreated();
             GetSamurais("before add:");
             AddSamurais();
             GetSamurais("after add:");

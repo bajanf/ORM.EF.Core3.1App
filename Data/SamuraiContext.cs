@@ -20,5 +20,11 @@ namespace Data
             optionBuilder.UseSqlServer(connectionstring);
             //base.OnConfiguring(optionBuilder);
         }
+
+        protected override void OnModelCreating (ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<SamuraiBattle>().HasKey(s => new { s.SamuraiId, s.BattleId });
+            modelBuilder.Entity<Horse>().ToTable("Horses");
+        }
     }
 }
