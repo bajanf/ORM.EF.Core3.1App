@@ -49,12 +49,59 @@ namespace ConsoleApp
             //GetHourseWithSamurai();
             //InsertSamuraiInNewClan();
             //InsertSamuraiInExistingClan();
-            GetSamuraiWithClan();
-            GetClanWithSamurais();
+            //GetSamuraiWithClan();
+            //GetClanWithSamurais();
 
-
+            //QuerySamuraiBattleStats();
+            //QueryUsingRawSql();
+            //QueryWithInterpolation();
+            //QueryUsingFromRawSqlStoredProcedure();
+            ExecuteSomeDeleteRawSql();
             Console.WriteLine("press any key...");
             Console.ReadKey();
+        }
+
+        private static void ExecuteSomeDeleteRawSql()
+        {
+            
+            var samuraiId = 12;
+            _context.Database.ExecuteSqlInterpolated($"EXEC DeleteQuotesForSamurai {samuraiId}");
+            var x = _context.Database.ExecuteSqlRaw("EXEC DeleteQuotesForSamurai {0}", samuraiId);
+        }
+
+        private static void QueryUsingFromRawSqlStoredProcedure()
+        {
+            var text = "happy";
+            var samurais = _context.Samurais.FromSqlRaw("EXEC dbo.SamuraiWhoSaidAWord {0}", text).ToList();
+            var samurais1 = _context.Samurais.FromSqlInterpolated($"EXEC dbo.SamuraiWhoSaidAWord {text}").ToList();
+        }
+
+        private static void QueryWithInterpolation()
+        {
+            string name = "Frodo Baggings";
+            var samurais = _context.Samurais
+                .FromSqlInterpolated($"Select* from samurais where name ={name}")
+                .ToList();
+
+
+            string name1 = "%Baggings%";
+            var samurais1 = _context.Samurais
+                .FromSqlInterpolated($"Select* from samurais where name like({name1})")
+                .ToList();
+        }
+
+        private static void QueryUsingRawSql()
+        {
+            var samurais = _context.Samurais.FromSqlRaw("Select*  from samurais").ToList() ;
+            var samurais1= _context.Samurais.FromSqlRaw("Select id, name,clanid  from samurais").Include(s=>s.Quotes).ToList();
+        }
+
+        private static void QuerySamuraiBattleStats()
+        {
+            var stats = _context.SamuraiBattleStats.ToList();
+            var firstStat = _context.SamuraiBattleStats.FirstOrDefault();
+            var bilboStat = _context.SamuraiBattleStats.Where(s => s.Name== "Bilbo Baggings").FirstOrDefault();
+            var bilboBagStat = _context.SamuraiBattleStats.Where(s => EF.Functions.Like( s.Name , "Bilbo%")).FirstOrDefault();
         }
 
         private static void InsertSamuraiInNewClan()

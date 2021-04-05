@@ -4,14 +4,16 @@ using Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(SamuraiContextNoTracking))]
-    partial class SamuraiContextModelSnapshot : ModelSnapshot
+    [Migration("20210405100210_SamuraiBattleStatus")]
+    partial class SamuraiBattleStatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -129,20 +131,6 @@ namespace Data.Migrations
                     b.HasIndex("BattleId");
 
                     b.ToTable("SamuraiBattle");
-                });
-
-            modelBuilder.Entity("Domain.SamuraiBattleStat", b =>
-                {
-                    b.Property<string>("EarliestBattle")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("NumberOfBattles")
-                        .HasColumnType("int");
-
-                    b.ToView("SamuraiBattleStats");
                 });
 
             modelBuilder.Entity("Domain.Horse", b =>
