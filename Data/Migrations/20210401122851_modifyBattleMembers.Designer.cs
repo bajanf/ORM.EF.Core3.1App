@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
-    [DbContext(typeof(SamuraiContextNoTracking))]
+    [DbContext(typeof(SamuraiContext))]
     [Migration("20210401122851_modifyBattleMembers")]
     partial class modifyBattleMembers
     {

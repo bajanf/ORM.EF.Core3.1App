@@ -9,7 +9,7 @@ namespace ConsoleApp
 {
     class Program
     {
-        private static SamuraiContextNoTracking _context = new SamuraiContextNoTracking();
+        private static SamuraiContext _context = new SamuraiContext();
         static void Main(string[] args)
         {
             //context.Database.EnsureCreated();
@@ -50,17 +50,27 @@ namespace ConsoleApp
             //InsertSamuraiInNewClan();
             //InsertSamuraiInExistingClan();
             //GetSamuraiWithClan();
-            //GetClanWithSamurais();
+            GetClanWithSamurais();
 
             //QuerySamuraiBattleStats();
             //QueryUsingRawSql();
             //QueryWithInterpolation();
             //QueryUsingFromRawSqlStoredProcedure();
-            ExecuteSomeDeleteRawSql();
+            //ExecuteSomeDeleteRawSql();
+
+            InsertMultipleSamurais();
+
+
             Console.WriteLine("press any key...");
             Console.ReadKey();
         }
 
+        private static void InsertMultipleSamurais()
+        {
+            var _bizData = new BussinessDataLogic();
+            var samuraiNames = new string[] { "sampson", "tasha", "Number3", "Number4" };
+            var newSamuraisCreated = _bizData.AddMultipleSamurais(samuraiNames);
+        }
         private static void ExecuteSomeDeleteRawSql()
         {
             
@@ -109,7 +119,7 @@ namespace ConsoleApp
             var clan = new Clan { ClanName = "PowerPuff"};
             var samurai = _context.Samurais.AsNoTracking().First(s=>s.Id==10);
             samurai.Clan=clan;
-            using (var newContext = new SamuraiContextNoTracking())
+            using (var newContext = new SamuraiContext())
             {
                 newContext.Attach(samurai);
                 newContext.SaveChanges();
@@ -120,7 +130,7 @@ namespace ConsoleApp
             var clan = _context.Set<Clan>().Find(1);
             var samurai = _context.Samurais.First(s => s.Id == 9);
             samurai.Clan = clan;
-            using (var newContext = new SamuraiContextNoTracking())
+            using (var newContext = new SamuraiContext())
             {
                 newContext.Attach(samurai);
                 newContext.Update(samurai);
@@ -156,7 +166,7 @@ namespace ConsoleApp
         {
             var samurai = _context.Samurais.FirstOrDefault(s=>s.Id==10);
             samurai.Horse = new Horse { Name = "Pinkie" };
-            using (var newContext = new SamuraiContextNoTracking())
+            using (var newContext = new SamuraiContext())
             {
                 newContext.Attach(samurai);
                 newContext.SaveChanges();
@@ -228,13 +238,13 @@ namespace ConsoleApp
             var quote = samurai.Quotes[0];
             quote.Text += " again?";
             //NOK because update all quotes for that samurai
-            //using (var newContext = new SamuraiContextNoTracking)
+            //using (var newContext = new SamuraiContext)
             //{
             //    newContext.Quotes.Update(quote);
             //    newContext.SaveChanges();
             //}
 
-            using (var newContext = new SamuraiContextNoTracking())
+            using (var newContext = new SamuraiContext())
             {
                 newContext.Entry(quote).State = EntityState.Modified;
                 newContext.SaveChanges();
@@ -348,7 +358,7 @@ namespace ConsoleApp
         {
             var quote = new Quote { Text = "Force be with you!", SamuraiId = samuraiId };
 
-            using (var newContext = new SamuraiContextNoTracking())
+            using (var newContext = new SamuraiContext())
             {
                 newContext.Quotes.Update(quote);
                 newContext.SaveChanges();
@@ -365,7 +375,7 @@ namespace ConsoleApp
                 new Quote{ Text="!"}
             });
 
-            using (var newContext = new SamuraiContextNoTracking())
+            using (var newContext = new SamuraiContext())
             {
                 newContext.Samurais.Update(samurai);
                 newContext.SaveChanges();
@@ -418,7 +428,7 @@ namespace ConsoleApp
         {
             var battle = _context.Battles.AsNoTracking().FirstOrDefault();
             battle.EndDate = new DateTime(1560, 06, 02);
-            using(var newContextInstance=new SamuraiContextNoTracking())
+            using(var newContextInstance=new SamuraiContext())
             {
                 newContextInstance.Battles.Update(battle);
                 newContextInstance.SaveChanges();
@@ -473,7 +483,7 @@ namespace ConsoleApp
             }
         }
 
-        private static void InsertMultipleSamurais()
+        private static void InsertMultipleSamuraiss()
         {
             var samurai1 = new Samurai { Name = "Sampson" };
             var samurai2 = new Samurai { Name = "Tasha" };

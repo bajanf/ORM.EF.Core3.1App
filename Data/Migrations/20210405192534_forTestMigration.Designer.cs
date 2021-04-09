@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(SamuraiContext))]
-    [Migration("20210405110408_addProcedure")]
-    partial class addProcedure
+    [Migration("20210405192534_forTestMigration")]
+    partial class forTestMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

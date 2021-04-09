@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
-    [DbContext(typeof(SamuraiContextNoTracking))]
+    [DbContext(typeof(SamuraiContext))]
     [Migration("20210331141825_init")]
     partial class init
     {
